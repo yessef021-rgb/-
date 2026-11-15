@@ -1,0 +1,2452 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>📚 کوییز خانواده در اسلام</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tahoma', 'Vazir', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    position: fixed;
+    touch-action: manipulation;
+}
+
+body {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e57c2 100%);
+    background-size: 400% 400%;
+    animation: bgShift 15s ease infinite;
+    color: #333;
+}
+
+@keyframes bgShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    padding: 15px;
+    overflow-y: auto;
+    animation: fadeIn 0.5s ease;
+    z-index: 10;
+}
+
+.screen.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* صفحه شروع */
+#startScreen {
+    background: linear-gradient(135deg, #1e3c72 0%, #7e57c2 50%, #e91e63 100%);
+    background-size: 400% 400%;
+    animation: bgShift 15s ease infinite;
+}
+
+.start-container {
+    width: 100%;
+    max-width: 520px;
+    background: rgba(255,255,255,0.97);
+    border-radius: 35px;
+    padding: 30px 25px;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.5), 0 0 60px rgba(126,87,194,0.4);
+    text-align: center;
+    position: relative;
+    border: 4px solid transparent;
+    background-clip: padding-box;
+}
+
+.start-container::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 35px;
+    padding: 4px;
+    background: linear-gradient(135deg, #e91e63, #ffd60a, #06d6a0, #4da6ff, #7e57c2, #e91e63);
+    background-size: 300% 300%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: borderRotate 5s linear infinite;
+    z-index: -1;
+}
+
+@keyframes borderRotate {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+.teacher-photo-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+}
+
+.teacher-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid #4da6ff;
+    background: linear-gradient(135deg, #4da6ff, #1e3c72);
+    box-shadow: 0 8px 30px rgba(30,60,114,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+}
+
+.teacher-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.photo-ring {
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    border: 3px dashed #4da6ff;
+    animation: ringRotate 10s linear infinite;
+    z-index: 1;
+}
+
+.photo-ring.ring2 {
+    inset: -22px;
+    border: 3px dotted #e91e63;
+    animation: ringRotate 15s linear infinite reverse;
+}
+
+@keyframes ringRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.game-title {
+    font-size: 28px;
+    margin: 15px 0 10px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #e91e63, #7e57c2, #1e3c72, #4da6ff, #e91e63);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleShine 3s linear infinite;
+}
+
+@keyframes titleShine {
+    to { background-position: 300% center; }
+}
+
+.game-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.info-box {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 20px;
+    padding: 15px 20px;
+    margin: 20px 0;
+    border: 2px dashed #4da6ff;
+}
+
+.info-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 15px;
+}
+
+.info-row + .info-row { border-top: 1px dashed #ccc; }
+.info-icon { font-size: 20px; }
+.info-label { color: #666; font-weight: bold; }
+.teacher-name { color: #1e3c72; font-weight: bold; font-size: 16px; }
+.teacher-phone { color: #e91e63; font-weight: bold; direction: ltr; font-size: 16px; }
+
+.big-btn {
+    background: linear-gradient(135deg, #1e3c72, #7e57c2, #e91e63);
+    background-size: 200% 200%;
+    color: #fff;
+    border: none;
+    padding: 16px 45px;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 8px 0 #4a148c, 0 15px 35px rgba(126,87,194,0.5);
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    animation: btnGradient 3s ease infinite;
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0;
+    transition: transform 0.15s;
+}
+
+@keyframes btnGradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.big-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: btnShine 3s linear infinite;
+}
+
+@keyframes btnShine { to { left: 100%; } }
+.big-btn:active { transform: translateY(5px); box-shadow: 0 3px 0 #4a148c; }
+
+.logo-wrapper {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px dashed #4da6ff;
+}
+
+.logo-fallback {
+    font-size: 20px;
+    display: inline-block;
+    padding: 10px 22px;
+    background: linear-gradient(135deg, #1e3c72, #7e57c2);
+    border-radius: 18px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.copyright { font-size: 12px; color: #888; margin-top: 12px; }
+
+.music-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3c72, #7e57c2);
+    color: #fff;
+    border: 3px solid #fff;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    padding: 0;
+}
+
+.music-toggle:hover { transform: scale(1.1); }
+.music-toggle:active { transform: scale(0.95); }
+.music-toggle.muted {
+    background: linear-gradient(135deg, #999, #666);
+    opacity: 0.8;
+}
+
+#quizScreen {
+    padding: 0 !important;
+    justify-content: flex-start !important;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+}
+
+.quiz-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #1e3c72, #7e57c2);
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 0 0 25px 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    gap: 10px;
+    position: relative;
+    z-index: 20;
+}
+
+.quiz-header h3 {
+    font-size: 15px;
+    flex: 1;
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.home-btn {
+    background: #fff;
+    border: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+}
+
+.home-btn:active { transform: translateY(3px); box-shadow: none; }
+
+.score-box {
+    background: #fff;
+    color: #1e3c72;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.progress-container {
+    width: 90%;
+    max-width: 700px;
+    margin: 15px auto 5px;
+    position: relative;
+}
+
+.progress-bar-bg {
+    width: 100%;
+    height: 14px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #06d6a0, #ffd60a);
+    width: 0%;
+    transition: width 0.5s ease;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(255,215,0,0.6);
+}
+
+.progress-text {
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 5px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+}
+
+.question-card {
+    width: 90%;
+    max-width: 700px;
+    background: rgba(255,255,255,0.98);
+    border-radius: 25px;
+    padding: 25px 20px;
+    margin: 15px auto;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    border: 4px solid #fff;
+    text-align: center;
+    animation: cardSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cardSlideIn {
+    from { transform: translateX(-50px) scale(0.9); opacity: 0; }
+    to { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+.question-number {
+    display: inline-block;
+    background: linear-gradient(135deg, #1e3c72, #7e57c2);
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.question-text {
+    font-size: 17px;
+    color: #1e3c72;
+    font-weight: 900;
+    line-height: 1.7;
+}
+
+.options-container {
+    width: 90%;
+    max-width: 700px;
+    margin: 10px auto 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 0 10px;
+}
+
+.option-btn {
+    background: rgba(255,255,255,0.98);
+    border: 4px solid #4da6ff;
+    border-radius: 20px;
+    padding: 16px 18px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.3s;
+    box-shadow: 0 6px 0 #1e3c72;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1e3c72;
+    animation: optionAppear 0.5s ease;
+}
+
+@keyframes optionAppear {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.option-btn:hover:not(.disabled):not(.correct):not(.wrong) {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 0 #1e3c72;
+    background: #f0f8ff;
+}
+
+.option-btn:active:not(.disabled):not(.correct):not(.wrong) {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0 #1e3c72;
+}
+
+.option-btn.disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.option-btn.correct {
+    background: linear-gradient(135deg, #06d6a0, #059669) !important;
+    border-color: #06d6a0 !important;
+    color: #fff !important;
+    box-shadow: 0 6px 0 #047857 !important;
+    animation: correctPulse 0.6s ease 2;
+}
+
+@keyframes correctPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.option-btn.wrong {
+    background: linear-gradient(135deg, #e91e63, #c2185b) !important;
+    border-color: #e91e63 !important;
+    color: #fff !important;
+    box-shadow: 0 6px 0 #880e4f !important;
+    animation: wrongShake 0.5s ease 2;
+}
+
+@keyframes wrongShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.option-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4da6ff, #1e3c72);
+    color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.option-btn.correct .option-number,
+.option-btn.wrong .option-number {
+    background: rgba(255,255,255,0.3);
+}
+
+.option-icon {
+    font-size: 24px;
+    margin-right: auto;
+    flex-shrink: 0;
+}
+
+.option-text {
+    flex: 1;
+    line-height: 1.5;
+}
+
+.toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: #fff;
+    padding: 25px 40px;
+    border-radius: 25px;
+    font-size: 22px;
+    font-weight: 900;
+    z-index: 5000;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    text-align: center;
+    pointer-events: none;
+    opacity: 0;
+    white-space: nowrap;
+    border: 5px solid;
+}
+
+.toast.show { animation: toastPop 1.5s ease-out forwards; }
+
+@keyframes toastPop {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    20% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+    40% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0; }
+}
+
+.toast.correct-toast {
+    background: linear-gradient(135deg, #06d6a0, #059669);
+    color: #fff;
+    border-color: #047857;
+}
+
+.toast.wrong-toast {
+    background: linear-gradient(135deg, #e91e63, #c2185b);
+    color: #fff;
+    border-color: #880e4f;
+}
+
+#endScreen {
+    background: linear-gradient(135deg, #1e3c72 0%, #7e57c2 50%, #e91e63 100%);
+    background-size: 400% 400%;
+    animation: bgShift 10s ease infinite;
+}
+
+.end-container {
+    background: rgba(255,255,255,0.98);
+    padding: 40px 30px;
+    border-radius: 35px;
+    text-align: center;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+    max-width: 520px;
+    width: 100%;
+    animation: endPop 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    border: 5px solid #fff;
+}
+
+@keyframes endPop {
+    from { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.trophy-icon {
+    font-size: 100px;
+    margin-bottom: 15px;
+    animation: trophyBounce 1.2s infinite;
+    filter: drop-shadow(0 10px 25px rgba(255,215,0,0.6));
+}
+
+@keyframes trophyBounce {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-15px) rotate(5deg); }
+}
+
+.end-container h2 {
+    font-size: 26px;
+    margin: 15px 0;
+    font-weight: 900;
+    background: linear-gradient(90deg, #1e3c72, #7e57c2, #e91e63);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: titleShine 3s linear infinite;
+}
+
+.final-score {
+    font-size: 22px;
+    color: #1e3c72;
+    font-weight: bold;
+    margin: 15px 0;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 20px;
+    border: 3px dashed #4da6ff;
+}
+
+.stats-box {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    padding: 12px 20px;
+    border-radius: 15px;
+    min-width: 100px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.stat-value.correct-stat { color: #06d6a0; }
+.stat-value.wrong-stat { color: #e91e63; }
+
+.stat-label {
+    font-size: 13px;
+    color: #666;
+    font-weight: bold;
+}
+
+.end-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.small-btn {
+    background: #fff;
+    color: #1e3c72;
+    border: 3px solid #1e3c72;
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: inherit;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+    transition: all 0.15s;
+}
+
+.small-btn:active {
+    transform: translateY(3px);
+    box-shadow: none;
+}
+
+.confetti-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1500;
+    overflow: hidden;
+}
+
+.confetti {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    top: -20px;
+    animation: confettiFall linear forwards;
+}
+
+@keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+@media (max-width: 600px) {
+    .game-title { font-size: 20px; }
+    .teacher-photo-wrapper { width: 120px; height: 120px; }
+    .big-btn { font-size: 18px; padding: 14px 30px; }
+    .question-text { font-size: 15px; }
+    .option-btn { font-size: 14px; padding: 13px 14px; }
+    .option-number { width: 30px; height: 30px; font-size: 14px; }
+    .option-icon { font-size: 20px; }
+    .toast { font-size: 18px; padding: 20px 30px; }
+    .end-container h2 { font-size: 22px; }
+    .final-score { font-size: 18px; }
+    .stat-value { font-size: 20px; }
+    .trophy-icon { font-size: 80px; }
+    .music-toggle { width: 48px; height: 48px; font-size: 20px; bottom: 15px; left: 15px; }
+}
+
+@media (max-width: 420px) {
+    .option-btn { font-size: 13px; padding: 11px 12px; }
+    .question-card { padding: 20px 15px; }
+    .question-text { font-size: 14px; }
+}
+</style>
+</head>
+<body>
+
+<audio id="bgMusic" loop preload="auto">
+    <source src="bg-music.mp3" type="audio/mpeg">
+</audio>
+
+<button id="musicToggle" class="music-toggle" title="روشن/خاموش موسیقی">🔇</button>
+
+<div id="startScreen" class="screen active">
+    <div class="start-container">
+        <div class="teacher-photo-wrapper">
+            <div class="teacher-photo" id="teacherPhoto">👩‍🏫</div>
+            <div class="photo-ring"></div>
+            <div class="photo-ring ring2"></div>
+        </div>
+
+        <h1 class="game-title">📚 کوییز خانواده در اسلام</h1>
+        <p class="game-subtitle">مجموعه سوالات چهارگزینه‌ای - ۱۲۰ سوال</p>
+
+        <div class="info-box">
+            <div class="info-row">
+                <span class="info-icon">👩‍🏫</span>
+                <span class="info-label">دانشجو:</span>
+                <span class="teacher-name">پیام نور</span>
+            </div>
+            <div class="info-row">
+                <span class="info-icon">📞</span>
+                <span class="info-label">تماس:</span>
+                <span class="teacher-phone">09222517707</span>
+            </div>
+        </div>
+
+        <button id="startBtn" class="big-btn">🎮 شروع کوییز</button>
+
+        <div class="logo-wrapper">
+            <div class="logo-fallback" id="logoFallback">📚 لوگو 📚</div>
+        </div>
+        <div class="copyright">© ۱۴۰۴ - دانشگاه پیام نور</div>
+    </div>
+</div>
+
+<div id="quizScreen" class="screen">
+    <div class="quiz-header">
+        <button class="home-btn" id="homeBtn">🏠</button>
+        <h3>📚 کوییز خانواده در اسلام</h3>
+        <div class="score-box">⭐ <span id="score">0</span></div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">سوال ۱ از ۱۲۰</div>
+    </div>
+
+    <div class="question-card" id="questionCard">
+        <div class="question-number" id="questionNumber">سوال ۱</div>
+        <div class="question-text" id="questionText">متن سوال...</div>
+    </div>
+
+    <div class="options-container" id="optionsContainer"></div>
+</div>
+
+<div id="endScreen" class="screen">
+    <div class="end-container">
+        <div class="trophy-icon" id="trophyIcon">🏆</div>
+        <h2 id="endTitle">🎉 آفرین!</h2>
+
+        <div class="final-score">
+            امتیاز نهایی: <span id="finalScore">0</span> از <span id="totalQuestions">120</span>
+        </div>
+
+        <div class="stats-box">
+            <div class="stat-item">
+                <div class="stat-value correct-stat" id="correctCount">۰</div>
+                <div class="stat-label">✅ درست</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value wrong-stat" id="wrongCount">۰</div>
+                <div class="stat-label">❌ غلط</div>
+            </div>
+        </div>
+
+        <p style="color: #666; margin: 15px 0; font-size: 15px; font-weight: bold;" id="endMessage">
+            تو خانواده در اسلام رو خوب یاد گرفتی!
+        </p>
+
+        <div class="end-buttons">
+            <button class="small-btn" id="replayBtn">🔄 تکرار کوییز</button>
+            <button class="small-btn" id="endHomeBtn">🏠 صفحه اصلی</button>
+        </div>
+    </div>
+</div>
+
+<div class="confetti-layer" id="confettiLayer"></div>
+
+<script>
+/* ============================================================
+   📚 کوییز خانواده در اسلام - ۱۲۰ سوال
+   ============================================================ */
+(function() {
+'use strict';
+
+/* ============================================================
+   سوالات - هر سوال با ۴ گزینه و شماره جواب درست
+   correct: 0, 1, 2, 3 → شماره گزینه درست (0=اول، 1=دوم، 2=سوم، 3=چهارم)
+   ============================================================ */
+var ALL_QUESTIONS = [
+    // ===== بنیان‌گذاران و نظریه‌پردازان =====
+    {
+        q: 'بنیان‌گذار خانواده درمانی ساختاری کیست؟',
+        options: ['سالوادور مینوچین', 'جی هی لی', 'گاتمن', 'لیونسون'],
+        correct: 0
+    },
+    {
+        q: 'مبدع نظریه نظام‌های خانواده چه کسی است؟',
+        options: ['ستیر', 'گالدینگ', 'بوین', 'نیکولز'],
+        correct: 2
+    },
+    {
+        q: 'پدیدآورنده نظریه ارتباطات خانوادگی چه کسی است؟',
+        options: ['گالدینگ', 'ستیر', 'سوزان جانسون', 'نیکولز'],
+        correct: 1
+    },
+    {
+        q: 'مشهورترین ایده‌پرداز در موضوع بازگشت انقلاب‌ها (ترمیدور) کیست؟',
+        options: ['امام خمینی', 'کرین برینتون', 'آیت‌الله خامنه‌ای', 'دکتر شریعتی'],
+        correct: 1
+    },
+    {
+        q: 'به نظر کدام متفکر ما در انتخاب همسر کسی را انتخاب می‌کنیم که در خود متمایز سازی شبیه ما باشد؟',
+        options: ['ستیر', 'ویتاکر', 'فروید', 'بوتن (بوین)'],
+        correct: 3
+    },
+    {
+        q: 'چه کسی تعاریف ذهن آگاهی را به دو گروه بالینی و غیر بالینی تقسیم می‌کند؟',
+        options: ['دیویس', 'داگالس', 'داتیلو', 'بیر'],
+        correct: 3
+    },
+    {
+        q: 'نظریه هم گرایی در مورد خانواده توسط چه کسی مطرح شد؟',
+        options: ['دورکیم', 'ویلیام جی گود', 'پارسونز', 'لوبلی'],
+        correct: 2
+    },
+    {
+        q: 'وارینگ صمیمیت زوجی را ترکیبی از چند عامل می داند؟',
+        options: ['هفت', 'شش', 'هشت', 'پنج'],
+        correct: 2
+    },
+    {
+        q: 'دیدگاه روان پویشی منبعث از الگوی روان کاوی کدام متفکر است؟',
+        options: ['یونگ', 'مارکس', 'اریک فروم', 'فروید'],
+        correct: 3
+    },
+    {
+        q: 'به نظر چه کسی نوزادان از چهره‌ای که به او دل بسته‌اند به عنوان پایگاهی امن برای مکاشفات خود استفاده می‌کنند؟',
+        options: ['سوزان جانسون', 'مری اینسورث', 'لزلی گرینبرگ', 'نیکولز'],
+        correct: 1
+    },
+    {
+        q: 'چه کسی در پرداختن به نظریه خانواده درمانی تجربه گرا نقش کلیدی داشت؟',
+        options: ['اسگیر', 'فروید', 'کارل ویتاکر', 'اریکسون'],
+        correct: 2
+    },
+    {
+        q: 'کلیدی‌ترین نظریه پرداز در رویکرد درمانی استراتژیک چه کسی است؟',
+        options: ['بیستون', 'جی هی لی', 'دووال', 'وارینگ'],
+        correct: 1
+    },
+    {
+        q: 'خانواده درمانی راهبردی توسط چه کسی به وجود آمد؟',
+        options: ['بیستون', 'پالو آلتو', 'جی.هی.لی', 'فروید'],
+        correct: 2
+    },
+    {
+        q: 'کتاب «نوجوان در خانواده درمانی: تحکیم قدرت روابط» اثر چه کسی است؟',
+        options: ['مینوچین', 'ستیر', 'ویتاکر', 'جوزف میکوچی'],
+        correct: 3
+    },
+    {
+        q: 'کدام متفکر مبدا اصلی رویکردی است که هدفش رهاسازی اعضای خانواده از تصنع، تکلف و سرکوب هیجان‌ها است؟',
+        options: ['بوژورمنی', 'نیکولز', 'ویتاکر', 'فروید'],
+        correct: 2
+    },
+    {
+        q: 'کدام متفکر هفت تکلیف زوجی را به عنوان شیوه مفهوم سازی بیان کرده است؟',
+        options: ['هریس', 'والرستاین', 'فروید', 'ینگ'],
+        correct: 1
+    },
+    {
+        q: 'زوج درمانی هیجان-محور متعلق به چه کسانی است؟',
+        options: ['نیکولز و گلدنبرگ', 'لزلی گرینبرگ و سوزان جانسون', 'جیمز و فروید', 'یونگ و فروید'],
+        correct: 1
+    },
+    {
+        q: 'برگزیده تفسیر نمونه اثر چه کسی است؟',
+        options: ['امام خمینی', 'علامه طباطبایی', 'مکارم شیرازی', 'آیت‌الله بهجت'],
+        correct: 2
+    },
+    {
+        q: 'از دیدگاه چه کسی ماهیت انسان بر اساس سائق‌های جنسی و پرخاشگری استوار است؟',
+        options: ['یونگ', 'جیمز', 'مارکمن', 'فروید'],
+        correct: 3
+    },
+    {
+        q: 'کدام متفکر صمیمیت زوجی را ترکیبی از هشت عامل: عاطفه، ابرازگری، همبستگی، تمایلات جنسی، حل تعارض، استقلال و هویت می‌داند؟',
+        options: ['والترستاین', 'فروید', 'یونگ', 'وارینگ'],
+        correct: 3
+    },
+
+    // ===== تاریخچه =====
+    {
+        q: 'خانواده درمانی از چه سالی رواج بیشتری پیدا کرد؟',
+        options: ['۱۹۳۰', '۱۹۴۰', '۱۹۶۰', '۱۹۵۰'],
+        correct: 3
+    },
+    {
+        q: 'خانواده درمانی از چه سالی وارد مرحله جدیدی شد که مددکاری اجتماعی، مشاوره کودک و گشتالت درمانی در آن نقش مهمی داشتند؟',
+        options: ['۱۹۳۰', '۱۹۴۰', '۱۹۵۰', '۱۹۶۰'],
+        correct: 2
+    },
+    {
+        q: 'زنان مورد مطالعه پژوهش طولی وایالت در کدام سال‌های زندگی زناشویی سخت‌ترین دوران زندگی را داشته‌اند؟',
+        options: ['شانزدهم تا بیستم', 'پانزدهم تا بیستم', 'چهاردهم تا شانزدهم', 'دوازدهم تا پانزدهم'],
+        correct: 1
+    },
+    {
+        q: 'پدر جامعه شناسی خانواده، چه کسانی می‌باشند؟',
+        options: ['روسو و راسل', 'پارسونز و گود', 'دورکیم و لوبلی', 'ویلیام جی گود'],
+        correct: 2
+    },
+    {
+        q: 'ویل دورانت بزرگترین حادثه ربع اول قرن بیستم را چه چیزی می‌داند؟',
+        options: ['مطرح شدن حقوق زن در برابر حقوق مرد', 'هسته‌ای شدن خانواده', 'تغییر بنیادی در کیان خانواده', 'دگرگونی وضع زنان'],
+        correct: 3
+    },
+
+    // ===== خانواده‌درمانی ساختاری =====
+    {
+        q: 'این حد و مرزها ثابت بوده و باعث جدایی افراد از یکدیگر می‌شود:',
+        options: ['حد و مرزهای مشخص', 'حد و مرزهای انعطاف ناپذیر', 'مرزهای پراکنده', 'حد و مرزهای مبهم'],
+        correct: 1
+    },
+    {
+        q: 'این عبارت که هرگاه در یک رابطه دوتایی یکی از دو نفر به علت تنش تعارض، ضعف یا نیاز به قدرت در شرایط نامطلوبی قرار گیرد، وارد رابطه با شخص سومی می‌شود چه نام دارد؟',
+        options: ['فرایند فرافکنی خانواده', 'واپس روی اجتماعی', 'مثلث سازی', 'گسلش عاطفی'],
+        correct: 2
+    },
+    {
+        q: 'فرایند فرافکنی خانواده در درون کدام مثلث عمل می‌کند؟',
+        options: ['پدر-فرزند-خاله', 'عمه-پدر-مادر', 'پدر-مادر-عمو', 'مادر-پدر-فرزند'],
+        correct: 3
+    },
+    {
+        q: 'خودمتمایزسازی چه نوع مفهومی است؟',
+        options: ['اجتماعی و فردی', 'درون روانی و بین فردی', 'بیرونی و ذهنی', 'درون روانی و اجتماعی'],
+        correct: 1
+    },
+    {
+        q: 'انتقال سطوح پایین خودمتمایزسازی والدین به فرزندی که نیاز بیشتری به وابستگی داشته باشد چه نام دارد؟',
+        options: ['گسلش عاطفی', 'مثلث سازی', 'فرایند فرافکنی خانواده', 'فرایند انتقال چندسطحی'],
+        correct: 2
+    },
+    {
+        q: 'در رویکرد خانواده درمانی بونن تمرکز اصلی درمان بر چیست؟',
+        options: ['کلیت خانواده', 'تغییر فرد یا زوج', 'محیط خانواده', 'تاکید بر هیجانات'],
+        correct: 1
+    },
+
+    // ===== تجربه‌گرا =====
+    {
+        q: 'براساس خانواده درمانی تجربه گرا ریشه مشکلات خانواده در سرکوب چیست؟',
+        options: ['باورها', 'خواسته‌ها', 'هیجان‌ها', 'گفتارها'],
+        correct: 2
+    },
+    {
+        q: 'درمان‌گرهای تجربه نگر و انسان گرا بر کدام یک از مفاهیم ذیل تاکید نمی‌ورزند؟',
+        options: ['حق انتخاب', 'خودشکوفایی', 'اراده آزاد', 'اجبار'],
+        correct: 3
+    },
+    {
+        q: 'کدام رویکرد درمانگر تجربه‌های اعضای خانواده را بر اساس محرومیت، انزوا و فقدان یک پیوند امن بین زوجین طبقه‌بندی می‌کند؟',
+        options: ['خانواده درمانی نمادی', 'خانواده درمانی انسان گرا', 'زوج درمانی هیجان محور', 'خانواده درمانی تحلیل گر'],
+        correct: 2
+    },
+    {
+        q: 'کدام درمانگران رویارویی، تهدید، اجبار و انتقاد را به حداقل می‌رسانند و بیشتر به کوشش‌های اعضای خانواده بها می‌دهند؟',
+        options: ['خانواده درمانی شناختی - رفتاری', 'خانواده درمانی روان پویشی', 'خانواده درمانی ساختاری', 'خانواده درمانی تجربه‌نگر - انسان گرا'],
+        correct: 3
+    },
+
+    // ===== راه‌حل‌محور =====
+    {
+        q: 'پرسش معجزه ذیل کدام یک از نظریه‌های خانواده درمانی بکار می‌رود؟',
+        options: ['خانواده درمانی راهبردی', 'خانواده درمانی راه حل محور', 'خانواده درمانی شناختی-رفتاری', 'خانواده درمانی هیجانی'],
+        correct: 1
+    },
+    {
+        q: 'در درمان متمرکز بر راه حل، کدام گزینه درست نیست؟',
+        options: ['تغییر امری اجتناب ناپذیر است', 'مراجع توان و منابع تغییر کردن را در اختیار دارد', 'مقاومت مفهوم سودمندی است', 'فقط کافی است یک تغییر کوچک به وجود آید'],
+        correct: 2
+    },
+    {
+        q: 'کدام گزینه درباره خانواده درمانی راه حل محور درست نیست؟',
+        options: ['مرکز خانواده درمانی کوتاه مدت از کارهای میلتون اریکسون اثر پذیرفته است', 'در این رویکرد به جای تمرکز بر گذشته بر آینده تاکید می‌شود', 'تلاش عمده در خانواده درمانی کوتاه مدت توسط اینسوکیم برگ شکل گرفت', 'درمان کوتاه مدت راه حل محور معروف‌ترین شیوه روان درمانی در جهان است'],
+        correct: 1
+    },
+    {
+        q: 'در کدام فرض نظری سلکمن مشاور تاکید می‌کند که فقط مسئله زمان مطرح است و از زبانی استفاده می‌کند که بیانگر امکان وجود راه حل باشد؟',
+        options: ['مقاومت مفهوم سودمندی نیست', 'فقط کافی است یک تغییر کوچک به وجود آید', 'مراجع توان و منابع تغییر کردن را در اختیار دارد', 'تغییر امری اجتناب ناپذیر است'],
+        correct: 3
+    },
+
+    // ===== بی‌اشتهایی عصبی =====
+    {
+        q: 'به اذعان مینوچین و همکارانش در کدام ویژگی خانواده دچار بی اشتهایی عصبی، متعهد به حفظ وضعیت موجود هستند؟',
+        options: ['اسارت', 'عدم انعطاف پذیری', 'حمایت بیش از حد', 'وارد کردن نوجوان نشانه دار در دعوای والدین'],
+        correct: 1
+    },
+    {
+        q: 'به نظر مینوچین و همکارانش خانواده‌های دچار بی اشتهایی عصبی کدام یک از مشخصه‌های ذیل را ندارند؟',
+        options: ['اسارت', 'حمایت بیش از حد', 'انعطاف پذیری', 'وارد کردن نوجوان نشانه دار در دعوای والدین'],
+        correct: 2
+    },
+    {
+        q: 'در کدام ویژگی خانواده‌های دچار بی اشتهایی عصبی اغلب اوقات به ذهن خوانی یا وساطت می‌پردازند؟',
+        options: ['حمایت بیش از حد', 'عدم انعطاف پذیری', 'اسارت', 'وارد کردن نوجوان نشانه دار در دعوای والدین'],
+        correct: 0
+    },
+
+    // ===== روان پویشی =====
+    {
+        q: 'خانواده درمانی روان پویایی مبتنی بر تفسیر و تعدیل و کاربرد نظریه و آثار کدام متفکر در زندگی خانوادگی است؟',
+        options: ['یونگ', 'ویلیام جیمز', 'فروید', 'اریک فروم'],
+        correct: 2
+    },
+    {
+        q: 'خانواده درمانی روان پویشی متاثر از دیدگاه روان کاوی پویشی چه کسی است؟',
+        options: ['یونگ', 'فروم', 'اریکسون', 'فروید'],
+        correct: 3
+    },
+    {
+        q: 'کدام رویکرد به خانواده درمانی بر نظریه روان تحلیلی استوار است؟',
+        options: ['شناختی-رفتاری', 'روان پویایی', 'ساختاری', 'راهبردی'],
+        correct: 1
+    },
+
+    // ===== خانواده =====
+    {
+        q: 'مهم‌ترین و اولین فضا برای یادگیری، انتقال اندیشه‌ها و تجارب چیست؟',
+        options: ['رسانه', 'مدرسه', 'خانواده', 'همسالان'],
+        correct: 2
+    },
+    {
+        q: 'تامین نیازهای زیستی، عاطفی و معنوی از مهم‌ترین کارکردهای کدام مفهوم است؟',
+        options: ['مدرسه', 'دانشگاه', 'رسانه', 'خانواده'],
+        correct: 3
+    },
+    {
+        q: 'اولین فضا برای یادگیری، انتقال اندیشه‌ها به فرزندان کدام است؟',
+        options: ['مدرسه', 'خانواده', 'دانشگاه', 'همسالان'],
+        correct: 1
+    },
+    {
+        q: 'مهم‌ترین باور دینی کدام است؟',
+        options: ['اعتقاد به زندگی پس از مرگ', 'اعتقاد به رسالت و امامت', 'اعتقاد به خدا', 'اعتقاد به عدل و امانتداری'],
+        correct: 2
+    },
+    {
+        q: 'کدام گزینه درباره خانواده درست نیست؟',
+        options: ['یک واحد زیستی و اجتماعی در جامعه است', 'از دو یا چند نفر تشکیل شده است', 'از یک نفر تشکیل شده است', 'اعضای خانواده در زمینه مراقبت فرزندان همکاری می‌کنند'],
+        correct: 2
+    },
+    {
+        q: 'کدام گزینه از مهم‌ترین کارکردهای خانواده نیست؟',
+        options: ['تامین نیازهای زیستی', 'تامین نیازهای عاطفی', 'تامین نیازهای معنوی', 'تامین نیازهای سیاسی'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه نیاز عاطفی روانی نیست؟',
+        options: ['پذیرش همه جانبه', 'توجه به احساسات', 'غذا و مسکن', 'حمایت به هنگام مواجهه با ترس'],
+        correct: 2
+    },
+    {
+        q: 'غذا و مسکن جز کدام یک از نیازهای انسان است؟',
+        options: ['زیستی', 'روانی', 'اجتماعی', 'معنوی'],
+        correct: 0
+    },
+    {
+        q: 'پیچیده‌ترین رابطه انسانی کدام است؟',
+        options: ['دوستی', 'ازدواج', 'فرزند پروری', 'انتخاب دغدغه'],
+        correct: 1
+    },
+    {
+        q: 'اولین وظیفه زن و مرد نسبت به هم چیست؟',
+        options: ['مصاحبت نیکو', 'برآورده ساختن نیاز عاطفی', 'استمرار روابط مطلوب', 'سازگاری'],
+        correct: 1
+    },
+
+    // ===== چرخه زندگی =====
+    {
+        q: 'در چرخه زندگی خانوادگی وظایف اصلی کدام مرحله عبارت از برقراری و حفظ ارتباط با والدین، خواهران و برادران و همسالان است؟',
+        options: ['نامزدی و عقد', 'خانواده با فرزندان کوچک', 'زوجین بدون فرزند', 'تجربه اندوزی در خانواده اصلی'],
+        correct: 3
+    },
+    {
+        q: 'سومین مرحله از چرخه زندگی خانوادگی کدام است؟',
+        options: ['زوجین بدون فرزند', 'نامزدی و عقد', 'بیرون رفتن فرزندان و سندروم آشیانه خالی', 'خانواده با فرزندان نوجوان'],
+        correct: 2
+    },
+    {
+        q: 'دومین مرحله از چرخه زندگی خانوادگی کدام است؟',
+        options: ['نامزدی و عقد', 'زوجین بدون فرزند', 'استقلال و آماده شدن برای ترک منزل', 'خانواده با فرزندان نوجوان'],
+        correct: 1
+    },
+    {
+        q: 'بیرون رفتن فرزندان و سندروم آشیانه خالی جز کدام یک از مراحل در چرخه زندگی است؟',
+        options: ['هفتم', 'ششم', 'پنجم', 'چهارم'],
+        correct: 1
+    },
+    {
+        q: 'اینکه همه فرزندان زندگی مستقلی شکل می‌دهند و زن و شوهر خودشان را تنها در کنار هم احساس می‌کنند اما با شرایط سنی، خانوادگی و روانی اجتماعی متفاوتی؛ ویژگی کدام مرحله از چرخه زندگی است؟',
+        options: ['چهارم', 'پنجم', 'ششم', 'هفتم'],
+        correct: 2
+    },
+    {
+        q: 'برقراری و حفظ ارتباط با والدین، خواهران و برادران و همسالان جز وظیفه کدام مرحله از چرخه زندگی خانوادگی است؟',
+        options: ['مرحله اول', 'مرحله دوم', 'مرحله سوم', 'مرحله چهارم'],
+        correct: 0
+    },
+    {
+        q: 'منظور از والد بودن کدام است؟',
+        options: ['ایجاد رابطه پرشور و جذاب', 'ایجاد هویت جنسی', 'زمانی که زوج تصمیم به بچه دار شدن می‌گیرند', 'تحکیم استقلال روان شناختی'],
+        correct: 2
+    },
+    {
+        q: 'خانواده‌های دارای نوجوان چه سنی را شامل می‌شود؟',
+        options: ['۱۵ تا ۱۸ سال', '۱۸ تا ۲۲ سال', '۱۶ تا ۲۲ سال', '۱۳ تا ۲۰ سال'],
+        correct: 3
+    },
+
+    // ===== ازدواج =====
+    {
+        q: 'از نظر اسلام ازدواج در سنی مجاز است؟',
+        options: ['کودکی تا پیری', 'نوجوانی', 'جوانی', 'بلوغ'],
+        correct: 3
+    },
+    {
+        q: 'از نظر اسلام در بین ملاک‌های لازم برای انتخاب همسر کدام مورد اولویت اول به شمار می‌رود؟',
+        options: ['کفویت', 'حسن خلق', 'ایمان', 'مناسبت جنسی'],
+        correct: 2
+    },
+    {
+        q: 'مطابق دیدگاه اسلام معیار ازدواج امری مطلق است؟',
+        options: ['همتایی', 'جذابیت', 'حسن خلق', 'ایمان'],
+        correct: 3
+    },
+    {
+        q: 'اولین مالکی که در زمینه مالک‌های جسمانی در گزینش همسر مورد توجه قرار می‌گیرد، چیست؟',
+        options: ['زیبایی چهره و اندام', 'رنگ پوست و نژاد', 'توانایی باروری', 'سلامت ظاهری و جسمانی'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین باور دینی که بر کسب آرامش و دوری از تنش خانواده تأثیر می‌گذارد کدام است؟',
+        options: ['اعتقاد به دوزخ', 'اعتقاد به بهشت', 'اعتقاد به ولایت', 'اعتقاد به خدا'],
+        correct: 3
+    },
+    {
+        q: 'از نظر اسلام، کدام گزینه عاملی برای فسخ ازدواج می‌باشد؟',
+        options: ['فقدان آرامش روانی', 'ازدواج مجدد مرد', 'بداخلاقی همسران', 'ناتوانی جنسی'],
+        correct: 3
+    },
+    {
+        q: 'اولین و مهم‌ترین ویژگی فردی که به عنوان همسر انتخاب می‌شود کدام است؟',
+        options: ['توان مادی', 'تقوا', 'ایمان', 'زیبایی'],
+        correct: 2
+    },
+    {
+        q: 'مطابق تعالیم اسلامی، ازدواج در کدام مرحله زندگی جایز است؟',
+        options: ['مرحله بلوغ', 'مرحله نوجوانی', 'مرحله جوانی', 'در هر مرحله'],
+        correct: 3
+    },
+    {
+        q: 'اسلام کدام نوع ازدواج را برای همه انسان‌ها توصیه کرده است؟',
+        options: ['دائم', 'موقت', 'چند همسری', 'همسر با یک نفر'],
+        correct: 0
+    },
+    {
+        q: 'بر اساس آیات قرآن، خداوند در آیه ۱۲۴ سوره طاها، از کدام نوع زندگی تحت عنوان زندگی تنگ و سخت یاد می‌کند؟',
+        options: ['ازدواج با کسی که مشکلات اقتصادی دارد', 'ازدواج با کسی که مشکلات روحی روانی دارد', 'بی‌بهره ماندن زن و شوهر از محبت متقابل', 'بی‌بهره ماندن زن و شوهر از باورهای دینی'],
+        correct: 3
+    },
+    {
+        q: 'در ایران باستان چه عملی را جزو آثار اهریمنی می‌دانستند؟',
+        options: ['چند همسری', 'زناشویی', 'مجرد بودن', 'چشم چرانی'],
+        correct: 2
+    },
+
+    // ===== احکام =====
+    {
+        q: 'اولین مرتبه ارث در اسلام به چه کسی مربوط است؟',
+        options: ['خواهر و برادر متوفی', 'همسر متوفی', 'خاله و عمه و عمو و دایی متوفی', 'فرزندان و والدین متوفی'],
+        correct: 3
+    },
+    {
+        q: 'فرزندان و والدین از نظر سهم الارث کدام مرتبه قرار دارند؟',
+        options: ['دومین مرتبه', 'سومین مرتبه', 'اولین مرتبه', 'چهارمین مرتبه'],
+        correct: 2
+    },
+    {
+        q: 'دایی، خاله، عمو و عمه در کدام مرتبه از خانواده قرار می‌گیرند؟',
+        options: ['مرتبه اول', 'مرتبه دوم', 'مرتبه سوم', 'مرتبه چهارم'],
+        correct: 3
+    },
+    {
+        q: 'بیشترین آیات قرآنی در خصوص کدام مرتبه از خانواده نازل شده است؟',
+        options: ['دوم', 'سوم', 'چهارم', 'اول'],
+        correct: 3
+    },
+    {
+        q: 'آیات مربوط به ارث، به مسائل کدام مرتبه از خانواده پرداخته است؟',
+        options: ['مرتبه دوم', 'مرتبه سوم', 'مرتبه اول', 'مرتبه چهارم'],
+        correct: 2
+    },
+    {
+        q: 'مطابق قرآن کریم، تقسیم ارث بر کدام اساس استوار است؟',
+        options: ['روابط سببی', 'روابط خویشاوندی', 'تناسب فقر و غنا', 'مراتب ایمان'],
+        correct: 1
+    },
+    {
+        q: 'نوع روابط خویشاوندی با پدر، مادر، خواهران و برادران از کدام نوع است؟',
+        options: ['سببی', 'ایلی', 'نسبی', 'فامیلی'],
+        correct: 2
+    },
+    {
+        q: 'مفهوم صله رحم اساساً شامل کدام نوع از روابط خویشاوندی است؟',
+        options: ['سببی', 'نسبی', 'سببی و نسبی', 'هر نوع تعامل اجتماعی'],
+        correct: 1
+    },
+    {
+        q: 'معنای لغت «ریحانه» که در اسلام برای توصیف زن بکار رفته است کدام است؟',
+        options: ['لطافت', 'زیبایی', 'مسئولیت پذیری', 'گل خوشبو'],
+        correct: 3
+    },
+    {
+        q: 'مطابق تعالیم اسلامی، نفقه به عهده چه کسی است؟',
+        options: ['زن', 'هر دو', 'پدر زن', 'مرد'],
+        correct: 3
+    },
+    {
+        q: 'کدام مورد از نفقه واجب زنان نمی‌باشد؟',
+        options: ['تهیه مسکن', 'تأمین هزینه‌های درمانی', 'فراهم ساختن وسائل زندگی', 'تأمین هزینه تحصیلی'],
+        correct: 3
+    },
+    {
+        q: 'مطابق تعالیم اسلامی، کدام رفتار با افزایش طول عمر رابطه دارد؟',
+        options: ['تقوا', 'ازدواج', 'محبت به والدین', 'حفظ روابط خویشاوندی'],
+        correct: 3
+    },
+    {
+        q: 'کدام وظیفه دینی موجب آسان شدن حسابرسی فرد در قیامت و فرو نشاندن خشم خداوند می‌شود؟',
+        options: ['روابط خوب با همسر', 'ازدواج', 'تنفر از طلاق', 'صله رحم'],
+        correct: 3
+    },
+    {
+        q: 'مطابق تعالیم اسلامی مهم‌ترین اصل در گزینش همسر کدام است؟',
+        options: ['تفاوت', 'زودرس بودن ازدواج', 'تمکن مالی', 'همتایی'],
+        correct: 3
+    },
+    {
+        q: 'خداوند در کدام آیه سوره نساء بر اهمیت صلح و سازش و حفظ خانواده تاکید می‌کند؟',
+        options: ['آیه ۱۳۰', 'آیه ۱۲۴', 'آیه ۱۲۶', 'آیه ۱۲۸'],
+        correct: 3
+    },
+
+    // ===== طلاق =====
+    {
+        q: 'در کدام نظام خانوادگی، مقامات متشخص و افراد مبرز، مرگ را بر طلاق زن ترجیح می‌دادند؟',
+        options: ['ساسانیان', 'قاجاریه', 'هخامنشیان', 'صفویه'],
+        correct: 3
+    },
+    {
+        q: 'یکی از مهم‌ترین علل افزایش طلاق در جهان و نیز در کشور ما چیست؟',
+        options: ['افزایش توقعات زوجین از هم', 'بحران ارزش‌ها', 'اعتیاد', 'مشکلات اقتصادی'],
+        correct: 0
+    },
+    {
+        q: 'اولین شیوه برخورد با مشکلات خانوادگی چیست؟',
+        options: ['نصیحت', 'تنبیه', 'جدایی زن و شوهر', 'مشاوره حکمیت'],
+        correct: 0
+    },
+    {
+        q: 'آخرین شیوه برخورد با مشکلات خانوادگی چیست؟',
+        options: ['نصیحت', 'جدایی زن و شوهر', 'تنبیه', 'طلاق'],
+        correct: 3
+    },
+    {
+        q: 'شقاق به چه معناست؟',
+        options: ['مصالحه کردن', 'تنبیه کردن', 'دروغ گفتن زوجین', 'قهر کردن و دشمنی زوجین'],
+        correct: 3
+    },
+    {
+        q: 'بر اساس مطالعات انجام شده در چه دوره‌ای مشکلات فرزندان بیشتر است؟',
+        options: ['قبل از طلاق', 'سال اول طلاق', '۵ تا ۱۰ سال بعد از طلاق', '۲ تا ۵ سال بعد از طلاق'],
+        correct: 3
+    },
+
+    // ===== معنویت =====
+    {
+        q: 'مهم‌ترین وجه تمایز بین نظام اسلامی و حکومت پهلوی چیست؟',
+        options: ['مسائل اقتصادی', 'قدرت نظامی', 'وسعت کشور', 'معنویت'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه درباره خانواده درمانی بوئنی درست نیست؟',
+        options: ['او مبدع نظریه نظام‌های خانوادگی است', 'به نظر او همیشه نوعی اضطراب مزمن در زندگی وجود دارد', 'بر اهمیت بررسی الگوهای بین نسلی تاریخی تاکید می‌کند', 'نیروهای ناهشیار در زندگی خانوادگی را نادیده می‌گیرد'],
+        correct: 3
+    },
+    {
+        q: 'یکی از معروف‌ترین و پرکاربردترین شیوه‌های روان درمانی جهان کدام است؟',
+        options: ['خانواده درمانی روان پویشی', 'خانواده درمانی ساختاری', 'خانواده درمانی شناختی - رفتاری', 'خانواده درمانی راه حل محور'],
+        correct: 3
+    },
+    {
+        q: 'به نظر هربرت هوور چه زمانی فرد به اهدافش می‌رسد؟',
+        options: ['توجه به مشکلات بچه‌ها', 'توجه به همسر', 'توجه به والدین', 'هم خوانی دخل و خرج'],
+        correct: 3
+    },
+
+    // ===== ارتباطات =====
+    {
+        q: 'در آیه ۱۲۸ سوره نساء بر چه چیزی تاکید شده است؟',
+        options: ['اهمیت حفظ خانواده', 'تاکید بر صلح و سازش', 'تاکید بر احترام', 'نقش مشورت و همکاری'],
+        correct: 3
+    },
+    {
+        q: 'کدام الگو در خانواده‌درمانی برای نوجوان‌هایی که در خطر هستند و مواد مصرف می‌کنند به کار می‌رود؟',
+        options: ['خانواده درمانی راه حل محور', 'درمان غیرفعال سازی سبک خانواده', 'خانواده درمانی بوئنی', 'خانواده درمانی چند بعدی'],
+        correct: 3
+    },
+    {
+        q: 'در توصیه‌های الچکار برای درمانگران خانواده، کدام گزینه درست نیست؟',
+        options: ['از حرف زدن زیاد پرهیزید', 'شرایط درمان را در جلسه اول تعیین کنید', 'در پایان جلسه هر آنچه رخ داده را خلاصه کنید', 'همسران را به بیان مشکلاتشان تشویق نکنید'],
+        correct: 3
+    },
+    {
+        q: 'در کدام مرحله از فرایند تغییر درمانی افراد روش‌های پیشنهادی و آموخته شده را به اجرا می‌گذارند؟',
+        options: ['پیش از تفکر در رفتار', 'تفکر و تامل در رفتار', 'آمادگی برای تغییر', 'عمل به رفتار'],
+        correct: 3
+    },
+    {
+        q: 'در تدوین طرح درمانی توسط مشاور خانواده، دومین گام تدوین طرح کدام است؟',
+        options: ['تعریف مشکل', 'مداخله', 'تشخیص', 'انتخاب مشکل'],
+        correct: 3
+    },
+    {
+        q: 'در تدوین طرح درمانی گام اول کدام است؟',
+        options: ['تعیین هدف کلی', 'انتخاب مشکل', 'تشخیص', 'تعریف مشکل'],
+        correct: 3
+    },
+    {
+        q: 'اولین گام در تدوین طرح درمانی توسط مشاور خانواده کدام است؟',
+        options: ['انتخاب مشکل', 'تعیین هدف کلی', 'تعیین هدف‌های عینی', 'تعریف مشکل'],
+        correct: 3
+    },
+    {
+        q: 'هدف از طرح معجزه در درمان راه حل محور چیست؟',
+        options: ['ایجاد اتفاق خارق العاده', 'پرخاشگری کلامی', 'قهر کردن و کنار کشیدن', 'پیگیری تفکر جدید'],
+        correct: 3
+    },
+    {
+        q: 'تکنیک هدیه خانوادگی مبتنی بر چه چیزی است؟',
+        options: ['فلسفه', 'روان شناسی', 'عرفان', 'هنر'],
+        correct: 3
+    },
+    {
+        q: 'هدف از کدام تکنیک این است که به خانواده کمک کنیم تا تغییراتی که در طول درمان انجام داده‌اند را بررسی کنیم؟',
+        options: ['پرتاب توپ', 'حیوانات التیام یافته', 'هدیه خانوادگی', 'قایق - طوفان - فانوس دریایی'],
+        correct: 3
+    },
+    {
+        q: 'کدام تکنیک خلاقانه، یک فعالیت نقاشی مناسب برای مرحله پایانی درمان است؟',
+        options: ['پرتاب توپ', 'قایق، طوفان، فانوس دریایی', 'هدیه خانوادگی', 'حیوانات التیام یافته'],
+        correct: 3
+    },
+    {
+        q: 'کدام تکنیک در درمان مناسب برای مرحله پایانی درمان است؟',
+        options: ['قایق-طوفان', 'پرتاب توپ', 'حیوانات التیام یافته', 'هدیه خانوادگی'],
+        correct: 3
+    },
+
+    // ===== تغییر و درمان =====
+    {
+        q: 'توانایی مهار خویشتن با کدام ویژگی اخلاقی توضیح داده می‌شود؟',
+        options: ['خوش بینی', 'سخاوت', 'صبر', 'قناعت'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه از شکایت‌های رایج در مشاوره خانواده نیست؟',
+        options: ['عدم تعامل با دیگران به ویژه خانواده زن و شوهر', 'روابط فاقد احساس و بی توجهی به نیازها', 'بی مسئولیتی و بی تعهدی به امور خانواده', 'تعامل با دیگران به ویژه خانواده زن و شوهر'],
+        correct: 3
+    },
+    {
+        q: 'کدام توصیه درباره تعارض محیط کار و خانواده درست نیست؟',
+        options: ['برنامه ریز خودتان نباشید', 'مسائل کاری را بعد از ترک محل کار کنار بگذارید', 'بکوشید نیازهای شریکتان را دریابید', 'زمان موثر را در محیط کارتان افزایش دهید'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین عامل طلاق بر اساس مطالعات در جامعه کنونی کدام است؟',
+        options: ['ندادن نفقه', 'بیکاری', 'مشکل امرار معاش', 'دخالت دیگران در زندگی زناشویی'],
+        correct: 3
+    },
+    {
+        q: 'از عوامل مؤثر در تأمین روابط عمیق عاطفی و صمیمیت بین زن و مرد و نیل به یگانگی در کانون خانواده است؟',
+        options: ['فعالیت اقتصادی', 'مشورت با دیگران', 'فداکاری زنان در مقابل مردان', 'کنترل روابط جنسی زن و مرد در محدوده خانواده'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین مشکل در بهم تنیدگی مرزها در روابط خانوادگی کدام است؟',
+        options: ['فقدان دلبستگی', 'فقدان امنیت', 'نادیده گرفته شدن کودکان', 'فقدان استقلال'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه درباره خیانت درست است؟',
+        options: ['فقط آمیزش به صورت فیزیکی خیانت است', 'خیانت افشای راز یکی از زوج‌ها است', 'راه‌های زیادی برای ترجمه و معنا دادن به خیانت وجود ندارد', 'رفتارها و ارتباطات گول زننده که جای عشق را می‌گیرد نوعی خیانت است'],
+        correct: 3
+    },
+    {
+        q: 'نظریه دلبستگی جان بالبی مبنای کدام رویکرد درمانی است؟',
+        options: ['خانواده درمانی ساختاری', 'خانواده درمانی راه حل محور', 'خانواده درمانی روان پویشی', 'زوج درمانی هیجان محور'],
+        correct: 3
+    },
+    {
+        q: 'دو راه برای گره‌گشایی از مشکلات اقتصادی کدامند؟',
+        options: ['فقط مذاکره', 'فقط تولید', 'هیچ کدام', 'تقویت تولید ملی و مذاکرات دیپلماتیک'],
+        correct: 3
+    },
+    {
+        q: 'مهمترین آسیب انقلاب از نظر آیت‌الله خامنه‌ای چیست؟',
+        options: ['تحریم‌های اقتصادی', 'جنگ تحمیلی', 'کمبود منابع', 'رها کردن اهداف و بازگشت به تفکرات طاغوتی'],
+        correct: 3
+    },
+    {
+        q: 'کرین برینتون بازگشت انقلاب‌ها را ذیل چه مفهومی تعریف کرده است؟',
+        options: ['انقلاب رنگی', 'کودتای نرم', 'جنگ نرم', 'ترمیدور'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از عوامل درونی مؤثر بر ارتجاع انقلاب است؟',
+        options: ['تحریم اقتصادی', 'جنگ نظامی', 'تبلیغات دشمن', 'ضعف ایمان یا دنیاطلبی'],
+        correct: 3
+    },
+    {
+        q: 'از نظر آیت‌الله خامنه‌ای، دشمنان بیرونی انقلاب اغلب از چه طریق به انقلاب ضربه می‌زنند؟',
+        options: ['جنگ نظامی مستقیم', 'تحریم اقتصادی', 'تبلیغات رسانه‌ای', 'تطمیع و تهدید افراد ضعیف و زبون'],
+        correct: 3
+    },
+    {
+        q: 'از نظر آیت‌الله خامنه‌ای، عوامل بقا و استمرار انقلاب کدامند؟',
+        options: ['تمسک به عروه‌الوثقی', 'استقامت بر اهداف', 'پایبندی به مقررات اسلامی', 'همه موارد'],
+        correct: 3
+    },
+    {
+        q: 'رابطه بین شرایط اقتصادی و فرهنگ و معنویت چگونه است؟',
+        options: ['هیچ رابطه‌ای ندارند', 'فقط اقتصاد مهم است', 'فقط فرهنگ مهم است', 'تنگاتنگ و جدایی ناپذیر'],
+        correct: 3
+    },
+
+    // ===== انقلاب اسلامی =====
+    {
+        q: 'انقلاب اسلامی چه تأثیری بر جهان داشته است؟',
+        options: ['فقط بر ایران تأثیر گذاشت', 'فقط بر جهان اسلام تأثیر گذاشت', 'هیچ تأثیری نداشت', 'بر ایران، جهان اسلام و فراتر از آن بر کل بشر تأثیر گذاشت'],
+        correct: 3
+    },
+    {
+        q: 'هسته و کانون اصلی مبانی انقلاب اسلامی چیست؟',
+        options: ['اصل عدالت', 'اصل نبوت', 'اصل امامت', 'اصل توحید'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از مصادیق گرایش‌های فطری کمال‌طلبانه نیست؟',
+        options: ['حقیقت‌طلبی', 'میل به جاودانگی', 'زیبایی‌دوستی', 'دنیاطلبی و مادی‌گرایی'],
+        correct: 3
+    },
+    {
+        q: 'کمال نهایی همه موجودات در مبانی انقلاب اسلامی چیست؟',
+        options: ['رسیدن به قدرت', 'ثروت‌اندوزی', 'شهرت', 'بازگشت به حضرت حق'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از ویژگی‌های انقلاب اسلامی است؟',
+        options: ['انطباق در هدف‌گیری سیاسی', 'انطباق در به کارگیری مردم', 'انطباق در ویژگی‌های رهبری', 'همه موارد'],
+        correct: 3
+    },
+    {
+        q: 'نهضت امام حسین (ع) با انقلاب اسلامی چه اشتراکی دارد؟',
+        options: ['اشتراک در روش مبارزه', 'اشتراک در تعداد یاران', 'اشتراک در مدت زمان', 'اشتراک در اهداف (مبارزه با جاهلیت و ضلالت)'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین ویژگی فرهنگ غربی چیست؟',
+        options: ['خدا محوری', 'معنویت‌گرایی', 'عدالت‌خواهی', 'اومانیسم (انسان‌محوری) و خدا‌انگاری'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از عوامل شکل‌گیری بیماری روشنفکری در ایران بود؟',
+        options: ['تقویت هویت ملی', 'بازگشت به قرآن', 'تقویت روحانیت', 'تقليد کورکورانه خود روشنفکران از غرب'],
+        correct: 3
+    },
+    {
+        q: 'نهضت جنگل به رهبری چه کسی بود؟',
+        options: ['آیت‌الله کاشانی', 'دکتر مصدق', 'امام خمینی', 'میرزا کوچک خان جنگلی'],
+        correct: 3
+    },
+    {
+        q: 'غرب‌زدگی به چه معناست؟',
+        options: ['دشمنی با غرب', 'سفر به غرب', 'خرید کالای غربی', 'برتر دانستن فرهنگ غربی و تلاش برای گرفتن همه وجوه آن بدون توجه به آثار منفی'],
+        correct: 3
+    },
+    {
+        q: 'ویژگی اصلی اقتصاد دوران پهلوی چه بود؟',
+        options: ['تولید ملی و خودکفایی', 'توزیع عادلانه ثروت', 'حمایت از کشاورزی', 'چپاول ثروت‌های ملی'],
+        correct: 3
+    },
+    {
+        q: 'حکومت پهلوی چه نوع حکومتی بود؟',
+        options: ['حکومت مردمی', 'حکومت دموکراتیک', 'حکومت پارلمانی', 'حکومت تحمیلی و کودتایی (استبداد)'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از ویژگی‌های حکومت پهلوی نبود؟',
+        options: ['خفقان و سانسور شدید', 'قساوت و شکنجه‌های قرون وسطایی', 'استبداد رای', 'مشارکت مردم در امور'],
+        correct: 3
+    },
+    {
+        q: 'فساد به چه معناست؟',
+        options: ['رعایت قانون', 'خدمت به مردم', 'اجرای عدالت', 'سوء استفاده از قوانین پذیرفته شده جامعه برای دستیابی به منافع شخصی'],
+        correct: 3
+    },
+    {
+        q: 'فساد مالی در دوران پهلوی بیشتر در کدام سطح بود؟',
+        options: ['سطح پایین جامعه', 'سطح متوسط جامعه', 'روستاها', 'بالاترین سطوح کشور (دربار)'],
+        correct: 3
+    },
+    {
+        q: 'جریان‌های فکری ایران در دوره معاصر به چند دسته تقسیم می‌شوند؟',
+        options: ['یک دسته', 'سه دسته', 'چهار دسته', 'دو دسته (قبل و بعد از ملی شدن صنعت نفت)'],
+        correct: 3
+    },
+    {
+        q: 'جریان فقاهتی-ولایتی به رهبری چه کسی بود؟',
+        options: ['میرزا کوچک خان', 'آیت‌الله کاشانی', 'دکتر مصدق', 'امام خمینی (ره)'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین دستاورد انقلاب اسلامی در زمینه تمامیت ارضی چه بود؟',
+        options: ['از دست دادن بخش‌هایی از خاک', 'کوچک شدن کشور', 'امتیاز دادن به دشمنان', 'حفظ تمامیت ارضی با وجود جنگ تحمیلی هشت ساله'],
+        correct: 3
+    },
+    {
+        q: 'شعار راهبردی جمهوری اسلامی ایران در عرصه بین‌المللی چیست؟',
+        options: ['شرق‌گرایی', 'غرب‌گرایی', 'بی‌طرفی کامل', 'نه شرقی نه غربی'],
+        correct: 3
+    },
+    {
+        q: 'پس از انقلاب اسلامی، مشارکت مردمی در چند صورت مختلف انجام می‌شود؟',
+        options: ['دو صورت', 'چهار صورت', 'ده صورت', 'هشت صورت'],
+        correct: 3
+    },
+    {
+        q: 'بر اساس اصل سیزدهم قانون اساسی، اقلیت‌های دینی چه حقوقی دارند؟',
+        options: ['محدودیت کامل', 'فقط حق کار', 'بدون هیچ حقی', 'آزادی در انجام مراسم دینی خود در حدود قانون'],
+        correct: 3
+    },
+    {
+        q: 'در ایران به ازای هر چند نفر یک نماینده در مجلس شورای اسلامی حضور دارد؟',
+        options: ['۱۰۰ هزار نفر', '۲۰۰ هزار نفر', '۵۰۰ هزار نفر', '۲۸۰ هزار نفر'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از موانع پیشرفت علمی ایران پس از انقلاب است؟',
+        options: ['حمایت از دانشمندان', 'توسعه دانشگاه‌ها', 'افزایش مقالات علمی', 'اخراج و جلوگیری از تحصیل دانشجویان ایرانی در کشورهای غربی'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین دستاورد انقلاب اسلامی در حوزه حمل و نقل چیست؟',
+        options: ['افزایش واردات خودرو', 'ساخت فرودگاه‌های جدید', 'خرید هواپیما', 'ایجاد زیرساخت‌های مناسب در حمل و نقل، آب، انرژی مصرفی و برق'],
+        correct: 3
+    },
+    {
+        q: 'از نظر اندیشمندان، شاخص فساد اقتصادی در کدام کشورها بیشتر است؟',
+        options: ['کشورهای توسعه یافته', 'کشورهای صنعتی', 'کشورهای اروپایی', 'کشورهای در حال توسعه'],
+        correct: 3
+    },
+    {
+        q: 'شاخص پنهان‌کاری مالی (IFS) به بررسی چه چیزی می‌پردازد؟',
+        options: ['میزان تولید', 'میزان صادرات', 'میزان واردات', 'میزان پنهان‌کاری مالی بین کشورها'],
+        correct: 3
+    },
+    {
+        q: 'بر اساس گزارش‌ها، پول‌شویی در آمریکا سالانه چه مقدار است؟',
+        options: ['۱۰۰ میلیارد دلار', '۲۰۰ میلیارد دلار', '۵۰۰ میلیارد دلار', '۳۰۰ میلیارد دلار'],
+        correct: 3
+    },
+    {
+        q: 'در دیدگاه کدام اندیشمند، خودمتمایزسازی به معنای توانایی فرد برای منفک کردن خود از خانواده اصلی است؟',
+        options: ['مینوچین', 'ویتاکر', 'ستیر', 'بوین'],
+        correct: 3
+    },
+    {
+        q: 'در خانواده درمانی ساختاری، مشکل اصلی خانواده‌های دچار اختلال چیست؟',
+        options: ['کمبود محبت', 'فقر اقتصادی', 'نبود فرزند', 'مرزهای نامناسب'],
+        correct: 3
+    },
+    {
+        q: 'اصلی‌ترین هدف خانواده درمانی تجربه‌گرا چیست؟',
+        options: ['تغییر ساختار خانواده', 'حل مشکل اقتصادی', 'افزایش تعداد فرزندان', 'رهاسازی اعضای خانواده از تصنع و سرکوب هیجان‌ها'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از ویژگی‌های خانواده سالم است؟',
+        options: ['بروز ندادن احساسات خود', 'نادیده گرفتن استعدادها', 'عدم توجه به علایق', 'بروز دادن احساسات'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه درباره ویژگی‌های اعضای خانواده سالم درست نیست؟',
+        options: ['توجه به استعدادها و علایق', 'احترام متقابل', 'ایجاد محیطی امن', 'بروز ندادن احساسات خود'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه درباره خانواده درست نیست؟',
+        options: ['از طریق اعتقادات مذهبی به هم پیوند خورده‌اند', 'اولین فضا برای یادگیری و تجارب به فرزندان است', 'با هم زیر یک سقف زندگی می‌کنند', 'دارای اصل و نسب مشترک نیستند'],
+        correct: 3
+    },
+    {
+        q: 'کدام وظیفه دینی موجب افزایش طول عمر انسان می‌شود؟',
+        options: ['نماز', 'روزه', 'حج', 'صله رحم'],
+        correct: 3
+    },
+    {
+        q: 'غزالی چه چیز را ادب اول در زندگی خانوادگی می‌داند؟',
+        options: ['در مراسم ازدواج میهمانی برگزار کند', 'در غیرت اعتدال را رعایت کند', 'میان همسران به عدالت رفتار کند', 'با همسر با مزاج و روی خوش برخورد کند'],
+        correct: 3
+    },
+    {
+        q: 'از نظر ابن سینا، مرد در روابط با همسر و اداره نهاد خانواده، چه اصلی را باید مورد نظر قرار دهد؟',
+        options: ['تکریم', 'اشتغال', 'هیبت', 'همه موارد'],
+        correct: 3
+    },
+    {
+        q: 'بزرگ‌ترین سرمشق برای مردان در برخورد با زنان کدام است؟',
+        options: ['امام علی(ع)', 'ابوطالب', 'امام سجاد(ع)', 'پیامبر'],
+        correct: 3
+    },
+    {
+        q: 'شیوه حضرت رسول(ص) در خانواده چگونه بود؟',
+        options: ['سخت گوشی و سخت گیری', 'سخت گیر و نرم خو', 'توصیه و سفارش', 'رفق و مدارا'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین ویژگی اسلام در خصوص خانواده کدام است؟',
+        options: ['نگاه تاریخی به خانواده', 'توجه به مشکلات خانواده', 'نگاه جزئی به خانواده', 'نگاه جامع به خانواده'],
+        correct: 3
+    },
+    {
+        q: 'اسلام قوام بودن در خانواده برعهده چه کسی گذاشته است؟',
+        options: ['فرزند ذکور', 'زن', 'همه اعضای خانواده', 'مرد'],
+        correct: 3
+    },
+    {
+        q: 'مطابق تعالیم اسلامی، کدام رفتار با افزایش طول عمر رابطه دارد؟',
+        options: ['تقوا', 'ازدواج', 'محبت به والدین', 'حفظ روابط خویشاوندی'],
+        correct: 3
+    },
+    {
+        q: 'اسلام حد طلاق را چه قرار داده است؟',
+        options: ['۱ بار', '۳ بار', '۴ بار', '۲ بار'],
+        correct: 3
+    },
+    {
+        q: 'کدام موارد از مواردی است که فرد محرم محسوب نمی‌شوند؟',
+        options: ['پدر و مادر، فرزندان و نوادگان', 'پدر مادربزرگ و پدران و مادران آنها', 'عمو، عمه، خاله و دایی', 'فرزندان عمو، عمه، خاله و دایی'],
+        correct: 3
+    },
+    {
+        q: 'فرزندان در چه سنی باید به نماز سفارش شوند؟',
+        options: ['۵ سالگی', '۱۳ سالگی', '۱۰ سالگی', '۷ سالگی'],
+        correct: 3
+    },
+    {
+        q: 'اساسی‌ترین وظیفه زن در خانواده کدام است؟',
+        options: ['تامین نیازهای عاطفی و جنسی همسر', 'صبر و بردباری در مشکلات خانواده', 'تامین نیازهای مالی', 'تربیت فرزند'],
+        correct: 3
+    },
+    {
+        q: 'شاخص توسعه انسانی شامل چه مواردی است؟',
+        options: ['درآمد و ثروت', 'قدرت نظامی', 'تولید نفت', 'آموزش، بهداشت و امید به زندگی'],
+        correct: 3
+    },
+    {
+        q: 'پس از انقلاب اسلامی، سواد دختران چه تغییری کرد؟',
+        options: ['کاهش یافت', 'تغییری نکرد', 'متوسط شد', 'افزایش چشمگیر یافت و به بالاترین حد رسید'],
+        correct: 3
+    },
+    {
+        q: 'تعداد رشته‌های ورزشی بانوان پس از انقلاب اسلامی چند برابر شد؟',
+        options: ['۵ برابر', '۱۰ برابر', '۲۰ برابر', '۳۰ برابر'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین دستاورد انقلاب اسلامی در عرصه زنان چه بود؟',
+        options: ['محدودیت زنان', 'کاهش حضور زنان در جامعه', 'حذف زنان از صحنه‌های اجتماعی', 'رشد چشمگیر در عرصه‌های علمی، فرهنگی و ورزشی'],
+        correct: 3
+    },
+    {
+        q: 'یکی از مهم‌ترین دستاوردهای انقلاب اسلامی در حوزه بهداشت چیست؟',
+        options: ['افزایش بیماری‌ها', 'کاهش خدمات درمانی', 'کاهش امید به زندگی', 'کاهش چشمگیر مرگ و میر کودکان و مادران'],
+        correct: 3
+    },
+    {
+        q: 'پس از انقلاب اسلامی، ایران در کدام شاخص توسعه انسانی بیشترین رشد را داشت؟',
+        options: ['تولید نفت', 'صنایع نظامی', 'ساختمان‌سازی', 'آموزش و سلامت'],
+        correct: 3
+    },
+    {
+        q: 'جمهوری اسلامی در کدام شاخص توسعه انسانی رتبه اول رشد در جهان را به دست آورد؟',
+        options: ['تولید نفت', 'قدرت نظامی', 'صادرات', 'افزایش شاخص توسعه انسانی'],
+        correct: 3
+    },
+    {
+        q: 'چالش‌های انقلاب اسلامی چیست؟',
+        options: ['تهاجم فرهنگی', 'تحریم اقتصادی', 'جنگ نرم', 'همه موارد'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از روش‌های دشمنان بیرونی برای آسیب به انقلاب است؟',
+        options: ['انتقال ویروس ارتجاع و انحطاط', 'تئوری پردازی استعماری', 'ترویج فساد و فحشا', 'همه موارد'],
+        correct: 3
+    },
+    {
+        q: 'آزادی در چارچوب قانون، دستاورد بزرگ انقلاب اسلامی است؟',
+        options: ['خیر', 'فقط برای برخی', 'نامشخص', 'بله'],
+        correct: 3
+    },
+    {
+        q: 'در کدام نظام خانوادگی، مقامات متشخص و افراد مبرز، مرگ را بر طلاق زن ترجیح می‌دادند؟',
+        options: ['ساسانیان', 'قاجاریه', 'هخامنشیان', 'صفویه'],
+        correct: 3
+    },
+    {
+        q: 'منظور از ژنوگرام چیست؟',
+        options: ['تجهید', 'ازدواج', 'صداقت', 'شجره نامه خانوادگی'],
+        correct: 3
+    },
+    {
+        q: 'مقصود از تروما چیست؟',
+        options: ['محبت', 'درمان', 'همکاری', 'آسیب'],
+        correct: 3
+    },
+    {
+        q: 'قلب درمان در خانواده‌ها کدام است؟',
+        options: ['شور', 'تعهد', 'ثروت', 'صمیمیت'],
+        correct: 3
+    },
+    {
+        q: 'به نظر بودن همواره چه احساس و عاطفه‌ای در زندگی وجود دارد؟',
+        options: ['آرامش مزمن', 'نزاع مزمن', 'شادی مزمن', 'اضطراب مزمن'],
+        correct: 3
+    },
+    {
+        q: 'یکی از اساسی‌ترین زمینه‌هایی که درمانگران اغلب در ارزیابی معنا آن را نادیده می‌گیرند کدام امر است؟',
+        options: ['زندگی اجتماعی', 'زندگی فرهنگی', 'زندگی اقتصادی', 'زندگی مذهبی'],
+        correct: 3
+    },
+    {
+        q: 'در کدام مهارت افراد تشویق می‌شوند تا به طور عمیق به عناصری مانند موقعیت، شدت و مدت احساس‌ها، زیر و بمی و کیفیت صداها توجه کنند؟',
+        options: ['توصیف', 'فعالیت آگاهانه', 'پذیرش بدون قضاوت', 'مشاهده'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه جز الگوهای متداول در خانواده‌های نشانه دار نیست؟',
+        options: ['عدم مقابله', 'حمایت بیش از حد', 'کناره گیری', 'عدم محدودیت'],
+        correct: 3
+    },
+    {
+        q: 'خانواده‌درمانی در چه سالی رواج بیشتری پیدا کرد؟',
+        options: ['۱۹۳۰', '۱۹۴۰', '۱۹۶۰', '۱۹۵۰'],
+        correct: 3
+    },
+    {
+        q: 'کدام نیرو در فرد بیانگر میزان توانایی او برای تمایز فرایند عقلی از فرایند احساسی است که او تجربه می‌کند؟',
+        options: ['گسلش اجتماعی', 'واپس روی اجتماعی', 'مثلث سازی', 'خود متمایز سازی'],
+        correct: 3
+    },
+    {
+        q: 'در کدام مرحله از فرایند تغییر در خانواده درمانی، شواهدی از قدم‌های اولیه از تغییر مشخص می‌شود؟',
+        options: ['پیش از تفکر در رفتار', 'تفکر و تامل در رفتار', 'عمل به رفتار', 'آمادگی برای تغییر'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه درباره مشاوره فردی (درمان فردی) درست نیست؟',
+        options: ['توجه به آشفتگی‌های درون روانی فرد است', 'نشانه‌های بیماری هدف درمان است', 'مشاور فرد را به صورت عمیق و اغلب جدا از محیط اجتماعی خانوادگی بررسی می‌کند', 'تاکید روی اینجا و اکنون برای بهبود عملکرد خانواده است'],
+        correct: 3
+    },
+    {
+        q: 'کدام یک از موارد زیر جزء کارکردهای اصلی خانواده نیست؟',
+        options: ['تولید نسل', 'اجتماعی کردن فرزندان', 'تامین امنیت عاطفی', 'تامین خدمات نظامی'],
+        correct: 3
+    },
+    {
+        q: 'منظور از والد بودن کدام است؟',
+        options: ['ایجاد رابطه پرشور و جذاب', 'ایجاد هویت جنسی', 'تحکیم استقلال روان شناختی', 'زمانی که زوج تصمیم به بچه دار شدن می‌گیرند'],
+        correct: 3
+    },
+    {
+        q: 'در خانواده‌های سالم کدام الگو حاکم است؟',
+        options: ['سلسله مراتب کاملاً رعایت شود', 'زن و شوهر با مشکل مواجه می‌شوند', 'روابط ترکیبی از تعاملات تکمیلی و تقارنی', 'والدین جایگاه بالاتری از فرزندان دارند'],
+        correct: 0
+    },
+    {
+        q: 'کدام گزینه درست نیست؟',
+        options: ['خانواده سالم خانواده‌ای است که سلسله مراتب کاملاً رعایت شود', 'والدین جایگاه بالاتری از فرزندان دارند', 'روابط در خانواده ترکیبی از تعاملات تکمیلی و تقارنی است', 'زن و شوهر هنگامی با مشکل مواجه می‌شوند که سلسله مراتب قدرت دوطرفه شود'],
+        correct: 3
+    },
+    {
+        q: 'مهم‌ترین دستاورد انقلاب اسلامی در زمینه تمامیت ارضی چه بود؟',
+        options: ['از دست دادن بخش‌هایی از خاک', 'کوچک شدن کشور', 'امتیاز دادن به دشمنان', 'حفظ تمامیت ارضی با وجود جنگ تحمیلی هشت ساله'],
+        correct: 3
+    },
+    {
+        q: 'اولین و مهم‌ترین ویژگی فردی که به عنوان همسر انتخاب می‌شود کدام است؟',
+        options: ['توان مادی', 'زیبایی', 'ثروت', 'ایمان و تقوا'],
+        correct: 3
+    },
+    {
+        q: 'در متنو اسلامی چه چیزی به منزله اصل و رکن ایمان محسوب شده است؟',
+        options: ['سخاوت', 'قناعت', 'صداقت', 'صبر'],
+        correct: 3
+    },
+    {
+        q: 'از ده جزء حیا، به ترتیب چند جزء به مرد و چند جزء به زن تعلق دارد؟',
+        options: ['۹ جزء – ۱ جزء', '۵ جزء – ۵ جزء', '۸ جزء – ۲ جزء', '۱ جزء – ۹ جزء'],
+        correct: 0
+    },
+    {
+        q: 'در میان انسان‌ها، نزدیکترین رابطه عاطفی میان چه کسانی برقرار می‌شود؟',
+        options: ['مادر و فرزند', 'پدر و فرزند', 'زوجین', 'فرزندان با یکدیگر'],
+        correct: 2
+    },
+    {
+        q: 'مرد در دین اسلام مجاز به حداکثر چند زن به طور هم زمان است؟',
+        options: ['یک زن', 'دو زن', 'سه زن', 'چهار زن'],
+        correct: 3
+    },
+    {
+        q: 'چه چیزی مانع از بروز احساس حقارت و حسد در کودکان می‌شود؟',
+        options: ['برخورد صمیمانه در سطح درک کودکان', 'گفت و گو مهربانانه و دلسوز با فرزندان', 'احترام به کودک با نیکو صدا زدن و گفت و گو محترمانه', 'برقراری مساوات در ابراز عواطف نسبت به فرزندان'],
+        correct: 3
+    },
+    {
+        q: 'کدامیک از آثار زنا براساس احادیث معصومین(ع) است؟',
+        options: ['خشم و غضب خداوند', 'بروز فقر و تنگدستی در دنیا', 'کوتاهی عمر', 'همه موارد'],
+        correct: 3
+    },
+    {
+        q: 'مطابق تعالیم اسلامی، کدام گزینه عاملی برای فسخ ازدواج می‌باشد؟',
+        options: ['فقدان آرامش روانی', 'ازدواج مجدد مرد', 'بداخلاقی همسران', 'ناتوانی جنسی'],
+        correct: 3
+    },
+    {
+        q: 'دایی و خاله در کدام مرتبه از خانواده قرار می‌گیرند؟',
+        options: ['۱', '۲', '۳', '۴'],
+        correct: 3
+    },
+    {
+        q: 'تقسیم بندی خانواده به مراتب مختلف از دیدگاه اسلام، بر کدام عامل مبتنی است؟',
+        options: ['سنت‌های اجتماعی رایج', 'تولید مثل', 'نیاز افراد', 'مسئولیت افراد نسبت به هم'],
+        correct: 3
+    },
+    {
+        q: 'در کدام مرحله از زندگی از نظر سلامت روانی برای افراد مناسب‌تر است ازدواج؟',
+        options: ['هنگام بلوغ', 'میانسالی', 'پیری', 'اوایل جوانی'],
+        correct: 3
+    },
+    {
+        q: 'مطابق تعالیم اسلامی، کدام رفتار با افزایش طول عمر رابطه دارد؟',
+        options: ['تقوا', 'ازدواج', 'محبت به والدین', 'حفظ روابط خویشاندی (صله رحم)'],
+        correct: 3
+    },
+    {
+        q: 'غیبت کردن یکی از مواردی است که در قرآن کریم به چه چیزی تشبیه شده است؟',
+        options: ['خوردن گوشت مرده برادر', 'خوردن مال یتیم', 'قتل نفس', 'شرک به خدا'],
+        correct: 0
+    },
+    {
+        q: 'مطابق تعالیم اسلامی، اولین واکنش مرد به نشوز زن چه باید باشد؟',
+        options: ['دوری از بستر', 'طلاق', 'تنبیه', 'نصیحت'],
+        correct: 3
+    },
+    {
+        q: 'بر اساس اسلام، فرزندان تحت چه شرایط سنی باید به دیدگاه والدین خود احترام بگذارند؟',
+        options: ['در هر مرحله سنی', 'تا ازدواج', 'تا بلوغ', 'تا وقتی با والدین زندگی می‌کنند'],
+        correct: 0
+    },
+    {
+        q: 'در اسلام، از کدام دوره سنی به مرحله وزارت نام برده می‌شود؟',
+        options: ['۷ سال اول', '۷ سال دوم', '۷ سال سوم', '۷ سال چهارم'],
+        correct: 2
+    },
+    {
+        q: 'کدام گزینه در مورد ازدواج موقت درست است؟',
+        options: ['مرد می‌تواند نامحدود داشته باشد', 'برای مردان تنها یک بار جایز است', 'زن نمی‌تواند شرط کند', 'با توافق زن و شوهر و با شرایط خاصی جایز است'],
+        correct: 3
+    },
+    {
+        q: 'نشوز زن به چه معناست؟',
+        options: ['نصیحت کردن زن توسط مرد', 'خشونت مرد نسبت به زن', 'تنبیه بدنی زن', 'ترک وظایف لازم نسبت به همسر'],
+        correct: 3
+    },
+    {
+        q: 'کدامیک از موارد زیر از محارم انسان محسوب نمی‌شود؟',
+        options: ['مادر و دختر', 'خواهر و برادر', 'عمه و خاله', 'دختر عمو و دختر خاله'],
+        correct: 3
+    },
+    {
+        q: 'در نظام خانواده، وظیفه قوام بودن بر عهده چه کسی است؟',
+        options: ['پدر', 'مادر', 'پسر بزرگ', 'شوهر'],
+        correct: 3
+    },
+    {
+        q: 'در قرآن کریم چه چیزی به عنوان ملاک برتری انسان‌ها معرفی شده است؟',
+        options: ['ثروت', 'قدرت', 'نژاد', 'تقوا'],
+        correct: 3
+    },
+    {
+        q: 'یکی از مهم‌ترین کارکردهای خانواده در اسلام کدام است؟',
+        options: ['تولید ثروت', 'کسب قدرت', 'ساخت مسکن', 'تربیت نسل صالح'],
+        correct: 3
+    },
+    {
+        q: 'بر اساس تعالیم اسلامی، مهم‌ترین ملاک در گزینش همسر کدام است؟',
+        options: ['زیبایی', 'ثروت', 'قومیت', 'ایمان'],
+        correct: 3
+    },
+    {
+        q: 'هدف اصلی ازدواج در اسلام کدام است؟',
+        options: ['خوشگذرانی', 'ثروت‌اندوزی', 'کسب موقعیت اجتماعی', 'رسیدن به آرامش و سکون'],
+        correct: 3
+    },
+    {
+        q: 'طبق آیات قرآن، خداوند همسران را برای یکدیگر چه چیزی قرار داده است؟',
+        options: ['ابزار کار', 'وسیله ثروت', 'همراه روزهای سخت', 'لباس یکدیگر'],
+        correct: 3
+    },
+    {
+        q: 'در متن اسلامی، کدام گزینه درباره وظایف فرزندان نسبت به والدین درست نیست؟',
+        options: ['بعد معنوی این وظایف شرط پذیرش سایر اعمال دینی فرد است', 'گستردگی وظایف فرزندان نسبت به والدین تا پایان عمر والدین و حتی پس از مرگ آنهاست', 'مسئولیت بیشتر فرزندان نسبت به مادر است', 'این وظایف بدون قید و شرط است'],
+        correct: 2
+    },
+    {
+        q: 'بر اساس تعالیم اسلامی، اولین گام در تربیت فرزند چیست؟',
+        options: ['فرستادن به مدرسه', 'آموزش نماز', 'تعلیم قرآن', 'انتخاب نام نیکو'],
+        correct: 3
+    },
+    {
+        q: 'اسلام در خصوص تربیت فرزندان چه چیزی را توصیه می‌کند؟',
+        options: ['سختگیری شدید', 'آزادی مطلق', 'بی‌توجهی', 'اعتدال و میانه‌روی'],
+        correct: 3
+    },
+    {
+        q: 'بر اساس احادیث، کدام نوع خانواده بهترین خانواده محسوب می‌شود؟',
+        options: ['خانواده پرجمعیت', 'خانواده ثروتمند', 'خانواده قدرتمند', 'خانواده‌ای که در آن مهر و محبت حاکم باشد'],
+        correct: 3
+    },
+    {
+        q: 'برای درمان پرخاشگری نوجوانان دارای اختلال استرس پس از سانحه و اختلال سلوک کدام روش درمان توصیه می‌شود؟',
+        options: ['راه حل محور', 'غیر فعال سازی سبک خانواده', 'چند بعدی', 'راهبردی'],
+        correct: 2
+    },
+    {
+        q: 'کدام برنامه در خانواده درمانی برای نوجوان‌هایی که در خطر هستند و مواد مصرف می‌کنند به کار می‌رود؟',
+        options: ['خانواده درمانی راه حل محور', 'درمان غیرفعال سازی سبک خانواده', 'خانواده درمانی بوئنی', 'خانواده درمانی چند بعدی'],
+        correct: 3
+    },
+    {
+        q: 'کدام گزینه جز تعاریف با تمرکز بالینی است؟',
+        options: ['آگاهی غیرارزیابانه و لحظه به لحظه', 'آگاهی پیچیده باز و پذیرا از هر چیزی که در زمانی رخ می‌دهد', 'توجه محض که چیزها و امور را به همان شکل که اتفاق می‌افتد می‌پذیرد', 'آگاهی از طریق توجه کردن هدفمند در لحظه حاضر و بدون ارزیابی'],
+        correct: 3
+    },
+    {
+        q: 'کدام تعریف ذهن آگاهی بالینی درست است؟',
+        options: ['مشاهده و توجه غیرارزیابانه به تحرک‌های درونی به همان صورت که اتفاق افتاده‌اند', 'یک حالتی از آگاهی هشیارانه که از طریق آن فرد نسبت به مسائل تازه پذیرا می‌شود', 'یک نوع توجه محض که چیزها و امور را به همان شکل که در ابتدا واقع می‌افتد می‌نگرد', 'آگاهی که از طریق توجه کردن هدفمند در لحظه حاضر و بدون ارزیابی برای آشکار ساختن لحظه به لحظه تجربه ظاهر می‌شود'],
+        correct: 3
+    },
+    {
+        q: 'این تعریف غیر بالینی ذهن آگاهی از چه کسی است: «یک حالتی از آگاهی هشیارانه که از طریق آن فرد نسبت به مسائل تازه پذیرا می‌شود و حساسیت وی به موقعیت ادراکی مشخص می‌شود»؟',
+        options: ['کابات زین', 'تارت', 'هاروی', 'لانجر'],
+        correct: 3
+    },
+    {
+        q: 'در خانواده‌های دچار بی اشتهایی عصبی، کدام ویژگی باعث می‌شود اعضا از لطمه زدن به احساسات یکدیگر بترسند؟',
+        options: ['اسارت', 'عدم انعطاف پذیری', 'وارد کردن نوجوان نشانه دار در دعوای والدین', 'حمایت بیش از حد'],
+        correct: 3
+    },
+    {
+        q: 'خانواده درمانی که هدف اصلی آن آسان کردن مشکلات خانوادگی است از کدام سال رواج بیشتری پیدا کرد؟',
+        options: ['۱۹۳۰', '۱۹۴۰', '۱۹۶۰', '۱۹۵۰'],
+        correct: 3
+    },
+    {
+        q: 'آنها به نقش گروه اهمیت می‌دهند و معتقدند که یک گروه فراتر از مجموعه‌های آن است.',
+        options: ['رفتاردرمانی', 'روان درمانی', 'مددکاری اجتماعی', 'گشتالت درمانی'],
+        correct: 3
+    },
+    {
+        q: 'اولین کارکرد خانه در قرآن کریم به چه معنا آمده است؟',
+        options: ['محل تسکین', 'محل ذکر خدا', 'محل رابطه قدسی', 'محل حفاظت از اعضای خانواده'],
+        correct: 0
+    },
+    {
+        q: 'خانواده فرزند یا چگونه گسترده می‌شود؟',
+        options: ['گسترده است', 'تأم مکانی است', 'از لحاظ اجتماعی وابسته به والدین است', 'از لحاظ اقتصادی مستقل می‌باشد'],
+        correct: 2
+    },
+    {
+        q: 'بنیان‌گذار خانواده درمانی ساختاری کیست؟',
+        options: ['جی هی لی', 'گاتمن', 'لیونسون', 'سالوادور مینوچین'],
+        correct: 3
+    },
+    {
+        q: 'کدام رویکرد به خانواده درمانی بر نظریه روان تحلیلی استوار است؟',
+        options: ['شناختی-رفتاری', 'ساختاری', 'راهبردی', 'روان پویایی'],
+        correct: 3
+    },
+    {
+        q: 'بین دو دیدگاه زن و مرد در خانواده، کدام اصل باید رعایت شود؟',
+        options: ['برابری کامل', 'برتری مرد', 'برتری زن', 'تعادل و مکمل بودن'],
+        correct: 3
+    },
+    {
+        q: 'بر اساس تعالیم اسلامی، کدام گزینه در مورد وظایف فرزندان نسبت به والدین درست است؟',
+        options: ['تا ۱۸ سالگی', 'تا زمان ازدواج', 'فقط در پیری', 'تا آخر عمر والدین و حتی پس از مرگ آنها'],
+        correct: 3
+    },
+    {
+        q: 'اسلام چند زن را برای مرد به طور همزمان مجاز دانسته است؟',
+        options: ['یک زن', 'دو زن', 'سه زن', 'چهار زن'],
+        correct: 3
+    }
+];
+
+var GAME_STATE = {
+    currentQuestion: 0,
+    score: 0,
+    correctCount: 0,
+    wrongCount: 0,
+    answered: false,
+    questions: [],
+    totalQuestions: 0
+};
+
+var timeouts = [];
+
+var screens = {
+    start: document.getElementById('startScreen'),
+    quiz:  document.getElementById('quizScreen'),
+    end:   document.getElementById('endScreen')
+};
+
+var questionCard = document.getElementById('questionCard');
+var questionNumber = document.getElementById('questionNumber');
+var questionText = document.getElementById('questionText');
+var optionsContainer = document.getElementById('optionsContainer');
+var scoreEl = document.getElementById('score');
+var progressFill = document.getElementById('progressFill');
+var progressText = document.getElementById('progressText');
+var confettiLayer = document.getElementById('confettiLayer');
+
+var endTitle = document.getElementById('endTitle');
+var finalScore = document.getElementById('finalScore');
+var totalQuestionsEl = document.getElementById('totalQuestions');
+var correctCountEl = document.getElementById('correctCount');
+var wrongCountEl = document.getElementById('wrongCount');
+var endMessage = document.getElementById('endMessage');
+var trophyIcon = document.getElementById('trophyIcon');
+
+var bgMusic = document.getElementById('bgMusic');
+var musicToggle = document.getElementById('musicToggle');
+var musicPlaying = false;
+
+function rand(min, max) { return Math.random() * (max - min) + min; }
+function $(id) { return document.getElementById(id); }
+
+/* ============================================================
+   🔀 شافل کردن آرایه (Fisher-Yates)
+   ============================================================ */
+function shuffleArray(arr) {
+    var newArr = arr.slice();
+    for (var i = newArr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = newArr[i];
+        newArr[i] = newArr[j];
+        newArr[j] = temp;
+    }
+    return newArr;
+}
+
+/* ============================================================
+   🔀 آماده‌سازی سوال: جواب درست رو جابه‌جا می‌کنه
+   ============================================================ */
+function prepareQuestion(q) {
+    var correctAnswer = q.options[q.correct];
+    var shuffledOptions = shuffleArray(q.options);
+    var newCorrectIndex = shuffledOptions.indexOf(correctAnswer);
+    return {
+        q: q.q,
+        options: shuffledOptions,
+        correct: newCorrectIndex
+    };
+}
+
+function safeTimeout(fn, delay) {
+    var id = setTimeout(function() {
+        var idx = timeouts.indexOf(id);
+        if (idx > -1) timeouts.splice(idx, 1);
+        try { fn(); } catch (e) { console.error('خطا:', e); }
+    }, delay);
+    timeouts.push(id);
+    return id;
+}
+
+function clearAllTimeouts() {
+    for (var i = 0; i < timeouts.length; i++) {
+        clearTimeout(timeouts[i]);
+    }
+    timeouts = [];
+}
+
+function showScreen(key) {
+    for (var k in screens) {
+        if (screens[k]) screens[k].classList.remove('active');
+    }
+    if (screens[key]) screens[key].classList.add('active');
+}
+
+function toPersian(num) {
+    var persian = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
+    return String(num).split('').map(function(d) {
+        return persian[parseInt(d)] || d;
+    }).join('');
+}
+
+function showConfetti(count) {
+    count = count || 60;
+    if (!confettiLayer) return;
+    var colors = ['#4da6ff', '#87ceeb', '#0066cc', '#06d6a0', '#ffd60a', '#ff6b9d', '#c44eff', '#ff9500'];
+    for (var i = 0; i < count; i++) {
+        var c = document.createElement('div');
+        c.className = 'confetti';
+        c.style.left = rand(0, 100) + 'vw';
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.animationDuration = rand(2.5, 5) + 's';
+        c.style.animationDelay = rand(0, 1) + 's';
+        c.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        c.style.width = rand(8, 16) + 'px';
+        c.style.height = rand(8, 16) + 'px';
+        confettiLayer.appendChild(c);
+        (function(el) {
+            safeTimeout(function() {
+                if (el && el.parentNode) el.parentNode.removeChild(el);
+            }, 6500);
+        })(c);
+    }
+}
+
+function showToast(type, text) {
+    var toast = document.createElement('div');
+    toast.className = 'toast ' + (type === 'correct' ? 'correct-toast' : 'wrong-toast');
+    toast.textContent = text;
+    document.body.appendChild(toast);
+    safeTimeout(function() { toast.classList.add('show'); }, 50);
+    safeTimeout(function() {
+        if (toast && toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 1700);
+}
+
+function startMusic() {
+    if (!bgMusic) return;
+    bgMusic.volume = 0.3;
+    var p = bgMusic.play();
+    if (p !== undefined) {
+        p.then(function() {
+            musicPlaying = true;
+            if (musicToggle) {
+                musicToggle.textContent = '🎵';
+                musicToggle.classList.remove('muted');
+            }
+        }).catch(function() { musicPlaying = false; });
+    }
+}
+
+function stopMusic() {
+    if (bgMusic) {
+        bgMusic.pause();
+        musicPlaying = false;
+        if (musicToggle) {
+            musicToggle.textContent = '🔇';
+            musicToggle.classList.add('muted');
+        }
+    }
+}
+
+function startQuiz() {
+    startMusic();
+    GAME_STATE.currentQuestion = 0;
+    GAME_STATE.score = 0;
+    GAME_STATE.correctCount = 0;
+    GAME_STATE.wrongCount = 0;
+    GAME_STATE.answered = false;
+
+    // شافل سوالات و آماده‌سازی (جواب‌ها جابه‌جا می‌شن)
+    var shuffledQuestions = shuffleArray(ALL_QUESTIONS);
+    GAME_STATE.questions = shuffledQuestions.map(function(q) {
+        return prepareQuestion(q);
+    });
+
+    GAME_STATE.totalQuestions = GAME_STATE.questions.length;
+    scoreEl.textContent = toPersian(0);
+    showScreen('quiz');
+    showQuestion();
+}
+
+function showQuestion() {
+    if (GAME_STATE.currentQuestion >= GAME_STATE.totalQuestions) {
+        finishQuiz();
+        return;
+    }
+
+    GAME_STATE.answered = false;
+    var q = GAME_STATE.questions[GAME_STATE.currentQuestion];
+    var qNum = GAME_STATE.currentQuestion + 1;
+
+    questionNumber.textContent = 'سوال ' + toPersian(qNum);
+    questionText.textContent = q.q;
+
+    var progressPercent = (qNum / GAME_STATE.totalQuestions) * 100;
+    progressFill.style.width = progressPercent + '%';
+    progressText.textContent = 'سوال ' + toPersian(qNum) + ' از ' + toPersian(GAME_STATE.totalQuestions);
+
+    optionsContainer.innerHTML = '';
+    var optionNumbers = ['۱', '۲', '۳', '۴'];
+    var optionIcons = ['🅰️', '🅱️', '🅲', '🅳'];
+
+    for (var i = 0; i < q.options.length; i++) {
+        (function(idx) {
+            var btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.style.animationDelay = (idx * 0.1) + 's';
+            btn.innerHTML =
+                '<span class="option-number">' + optionNumbers[idx] + '</span>' +
+                '<span class="option-text">' + q.options[idx] + '</span>' +
+                '<span class="option-icon">' + optionIcons[idx] + '</span>';
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (GAME_STATE.answered) return;
+                handleAnswer(idx, btn);
+            });
+            optionsContainer.appendChild(btn);
+        })(i);
+    }
+
+    questionCard.style.animation = 'none';
+    void questionCard.offsetWidth;
+    questionCard.style.animation = 'cardSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+}
+
+function handleAnswer(selectedIdx, selectedBtn) {
+    GAME_STATE.answered = true;
+    var q = GAME_STATE.questions[GAME_STATE.currentQuestion];
+    var correctIdx = q.correct;
+    var isCorrect = (selectedIdx === correctIdx);
+
+    var allBtns = optionsContainer.querySelectorAll('.option-btn');
+    for (var i = 0; i < allBtns.length; i++) {
+        allBtns[i].classList.add('disabled');
+    }
+
+    if (isCorrect) {
+        selectedBtn.classList.add('correct');
+        GAME_STATE.score += 1;
+        GAME_STATE.correctCount += 1;
+        showToast('correct', '✅ آفرین! درست بود');
+        showConfetti(20);
+    } else {
+        selectedBtn.classList.add('wrong');
+        GAME_STATE.wrongCount += 1;
+        safeTimeout(function() {
+            allBtns[correctIdx].classList.add('correct');
+        }, 500);
+        showToast('wrong', '❌ اشتباه بود! جواب درست مشخص شد');
+    }
+
+    scoreEl.textContent = toPersian(GAME_STATE.score);
+    safeTimeout(function() {
+        GAME_STATE.currentQuestion++;
+        showQuestion();
+    }, isCorrect ? 1500 : 2300);
+}
+
+function finishQuiz() {
+    showScreen('end');
+    var total = GAME_STATE.totalQuestions;
+    var correct = GAME_STATE.correctCount;
+    var wrong = GAME_STATE.wrongCount;
+    var percent = (correct / total) * 100;
+
+    finalScore.textContent = toPersian(correct);
+    totalQuestionsEl.textContent = toPersian(total);
+    correctCountEl.textContent = toPersian(correct);
+    wrongCountEl.textContent = toPersian(wrong);
+
+    if (percent === 100) {
+        endTitle.textContent = '🎉 عالی! تمام جواب‌ها درست!';
+        endMessage.textContent = 'تو استاد خانواده در اسلام هستی!';
+        trophyIcon.textContent = '🏆';
+        showConfetti(150);
+    } else if (percent >= 80) {
+        endTitle.textContent = '🌟 آفرین! خیلی خوب بود!';
+        endMessage.textContent = 'فقط چند تا اشتباه داشتی. بازم تلاش کن!';
+        trophyIcon.textContent = '🥇';
+        showConfetti(100);
+    } else if (percent >= 60) {
+        endTitle.textContent = '👏 خوب بود!';
+        endMessage.textContent = 'می‌تونی بهتر هم بشی! دوباره امتحان کن.';
+        trophyIcon.textContent = '🥈';
+        showConfetti(60);
+    } else if (percent >= 40) {
+        endTitle.textContent = '💪 تلاش خوبی بود!';
+        endMessage.textContent = 'یه بار دیگه جزوه رو بخون و برگرد!';
+        trophyIcon.textContent = '🥉';
+    } else {
+        endTitle.textContent = '📚 نیاز به مطالعه داری';
+        endMessage.textContent = 'جزوه رو یه بار دیگه بخون و برگرد!';
+        trophyIcon.textContent = '📖';
+    }
+}
+
+function bindEvents() {
+    var startBtn = $('startBtn');
+    if (startBtn) startBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        startQuiz();
+    });
+
+    var homeBtn = $('homeBtn');
+    if (homeBtn) homeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        clearAllTimeouts();
+        stopMusic();
+        showScreen('start');
+    });
+
+    var replayBtn = $('replayBtn');
+    if (replayBtn) replayBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        startQuiz();
+    });
+
+    var endHomeBtn = $('endHomeBtn');
+    if (endHomeBtn) endHomeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        clearAllTimeouts();
+        stopMusic();
+        showScreen('start');
+    });
+
+    if (musicToggle) {
+        musicToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            if (musicPlaying) stopMusic();
+            else startMusic();
+        });
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            clearAllTimeouts();
+            stopMusic();
+            showScreen('start');
+        }
+    });
+
+    var teacherEl = $('teacherPhoto');
+    if (teacherEl) {
+        var tImg = new Image();
+        tImg.onload = function() {
+            teacherEl.textContent = '';
+            tImg.style.cssText = 'width:100%;height:100%;object-fit:cover;border-radius:50%;';
+            teacherEl.appendChild(tImg);
+        };
+        tImg.src = 'teacher.jpg';
+    }
+
+    var logoFallback = $('logoFallback');
+    if (logoFallback) {
+        var lImg = new Image();
+        lImg.onload = function() {
+            lImg.style.cssText = 'max-width:130px;height:auto;';
+            logoFallback.parentNode.replaceChild(lImg, logoFallback);
+        };
+        lImg.src = 'logo.png';
+    }
+}
+
+window.addEventListener('load', function() {
+    console.log('%c📚 کوییز خانواده در اسلام آماده است!',
+                'color:#7e57c2;font-size:20px;font-weight:bold;');
+    console.log('%c📝 ' + ALL_QUESTIONS.length + ' سوال چهارگزینه‌ای با جواب‌های جابه‌جا',
+                'color:#e91e63;font-size:14px;font-weight:bold;');
+    console.log('%c🔀 سوالات و گزینه‌ها هر بار شافل می‌شن',
+                'color:#06d6a0;font-size:14px;font-weight:bold;');
+    console.log('%c👩‍🏫 پیام نور - 09222517707',
+                'color:#1e3c72;font-size:14px;');
+
+    bindEvents();
+    showScreen('start');
+});
+
+window.addEventListener('error', function(e) {
+    console.log('خطای جزئی:', e.message);
+});
+
+})();
+</script>
+</body>
+</html>
